@@ -13,7 +13,6 @@ const BubblePage = () => {
         axiosWithAuth()
             .get(`http://localhost:5000/api/colors`)
             .then(res => {
-                console.log(res);
                 setColorList(res.data);
             })
             .catch(err => {
@@ -21,9 +20,25 @@ const BubblePage = () => {
             });
     }, []);
 
+    function updateColors(action, colorData) {
+        const filterColors = colorList.filter(color => color.id !== colorData.id);
+
+        if (action === 'edit') {
+            const updatedColors = [...filterColors, colorData];
+
+            updatedColors.sort(function(a, b) {
+                return parseFloat(a.id) - parseFloat(b.id);
+            });
+
+            setColorList(updatedColors);
+        } else {
+            setColorList(filterColors);
+        }
+    }
+
     return (
         <>
-            <ColorList colors={colorList} updateColors={setColorList} />
+            <ColorList colors={colorList} updateColors={updateColors} />
             <Bubbles colors={colorList} />
         </>
     );

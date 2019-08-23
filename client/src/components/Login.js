@@ -21,7 +21,6 @@ function Login(props) {
         axios
             .post('http://localhost:5000/api/login', { username: userName, password: password })
             .then(res => {
-                console.log(res);
                 localStorage.setItem('token', res.data.payload);
             })
             .then(() => {
